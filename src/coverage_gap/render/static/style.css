@@ -89,9 +89,9 @@ main {
 
 .page-map main { max-width: 100%; padding: 0; }
 .page-map .hero {
-  max-width: var(--max-width);
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 1.25rem 1.75rem 0.85rem;
+  padding: 1.25rem 1.75rem 0.95rem;
 }
 .page-map .below-map {
   max-width: var(--max-width);
@@ -102,13 +102,14 @@ main {
 .hero h1 {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.4rem, 2.4vw + 0.4rem, 2.4rem);
+  font-size: clamp(1.35rem, 1.9vw + 0.5rem, 2.05rem);
   line-height: 1.15;
-  letter-spacing: -0.018em;
-  font-variation-settings: "opsz" 40;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 36;
   margin: 0 0 0.55rem;
   color: #111;
   white-space: normal;
+  text-wrap: balance;
 }
 .hero .subhead {
   color: var(--muted);
