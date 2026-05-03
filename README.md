@@ -10,9 +10,21 @@ This is V1 of the Tenens 30-day sprint deliverable. Full design and motivation l
 
 ## Getting started
 
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if you don't have it:
+
 ```
-brew install uv                 # if not already installed on computer, find docs at [link](https://docs.astral.sh/uv/getting-started/installation/)
-uv sync
+brew install uv
+```
+
+Then install all dependencies (including pytest and dev tools):
+
+```
+uv sync --all-extras
+```
+
+Run the pipeline:
+
+```
 uv run coverage-gap download    # pulls CMS files into data/raw/
 uv run coverage-gap build       # filters, joins, scores into data/processed/
 uv run coverage-gap verify      # human spot-check gate, writes audit/verification-log.md
