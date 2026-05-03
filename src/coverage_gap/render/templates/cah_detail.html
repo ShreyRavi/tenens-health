@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ cah.name }} | Coverage Gap Index{% endblock %}
+{% block content %}
+<section class="cah-detail">
+  <p><a href="../index.html">All hospitals</a></p>
+  <h1>{{ cah.name }}</h1>
+  <p class="meta">{{ cah.city }}, {{ cah.state|default('MS') }} &middot; Medicare provider {{ cah.provider_num }}</p>
+
+  <h2>Specialty coverage within 30 miles</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Specialty</th>
+        <th>Status</th>
+        <th>Active physicians</th>
+        <th>Nearest physician</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for g in gaps %}
+      <tr class="row-{{ g.level|lower }}">
+        <td>{{ g.specialty }}</td>
+        <td><span class="badge badge-{{ g.level|lower }}">{{ g.level }}</span></td>
+        <td>{{ g.physician_count }}</td>
+        <td>{% if g.nearest_distance_mi %}{{ g.nearest_distance_mi }} mi{% else %}none in dataset{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <p class="meta">CRITICAL = zero physicians within 30 miles AND HRSA HPSA-designated. HIGH = zero physicians within 30 miles. MODERATE = 1 or 2 physicians. COVERED = 3 or more.</p>
+</section>
+{% endblock %}

@@ -1,0 +1,125 @@
+# NPPES taxonomy code mapping for the 15 core specialties tracked in the dashboard.
+# Codes pulled from NUCC's public taxonomy list at https://taxonomy.nucc.org/.
+# When in doubt, include subspecialty codes. Over-counting physicians yields
+# conservative gap claims, which is what we want.
+
+specialties:
+  general_surgery:
+    label: "General Surgery"
+    codes:
+      - "208600000X"   # Surgery
+      - "2086S0102X"   # Surgical Critical Care
+      - "2086S0105X"   # Surgical Oncology (also under oncology, intentional)
+      - "2086X0206X"   # Trauma Surgery
+      - "2086S0120X"   # Pediatric Surgery
+      - "2086S0122X"   # Plastic and Reconstructive Surgery
+
+  orthopedic_surgery:
+    label: "Orthopedic Surgery"
+    codes:
+      - "207X00000X"   # Orthopaedic Surgery
+      - "207XS0114X"   # Adult Reconstructive Orthopaedic Surgery
+      - "207XX0004X"   # Foot and Ankle Surgery
+      - "207XS0106X"   # Hand Surgery
+      - "207XS0117X"   # Orthopaedic Surgery of the Spine
+      - "207XS0007X"   # Orthopaedic Surgery, Pediatric
+      - "207XX0005X"   # Orthopaedic Surgery, Sports Medicine
+      - "207XX0801X"   # Orthopaedic Surgery, Trauma
+
+  cardiology:
+    label: "Cardiology"
+    codes:
+      - "207RC0000X"   # Cardiovascular Disease
+      - "207RI0011X"   # Interventional Cardiology
+      - "207RC0001X"   # Clinical Cardiac Electrophysiology
+      - "207RA0001X"   # Advanced Heart Failure and Transplant Cardiology
+
+  pulmonology_critical_care:
+    label: "Pulmonology and Critical Care"
+    codes:
+      - "207RP1001X"   # Pulmonary Disease
+      - "207RC0200X"   # Critical Care Medicine
+
+  neurology:
+    label: "Neurology"
+    codes:
+      - "2084N0400X"   # Neurology
+      - "2084N0402X"   # Vascular Neurology
+      - "2084N0008X"   # Neuromuscular Medicine
+      - "2084V0102X"   # Neuromusculoskeletal Medicine
+
+  psychiatry:
+    label: "Psychiatry"
+    codes:
+      - "2084P0800X"   # Psychiatry
+      - "2084P0802X"   # Addiction Psychiatry
+      - "2084P0805X"   # Geriatric Psychiatry
+      - "2084P0804X"   # Child and Adolescent Psychiatry
+      - "2084F0202X"   # Forensic Psychiatry
+
+  ob_gyn:
+    label: "Obstetrics and Gynecology"
+    codes:
+      - "207V00000X"   # Obstetrics and Gynecology
+      - "207VG0400X"   # Gynecology
+      - "207VM0101X"   # Maternal and Fetal Medicine
+      - "207VX0201X"   # Gynecologic Oncology (also under oncology)
+      - "207VE0102X"   # Reproductive Endocrinology
+
+  oncology:
+    label: "Oncology"
+    codes:
+      - "207RX0202X"   # Medical Oncology
+      - "207RH0003X"   # Hematology and Oncology
+      - "2086S0105X"   # Surgical Oncology (also under general surgery)
+      - "2085R0001X"   # Radiation Oncology
+      - "207VX0201X"   # Gynecologic Oncology (also under ob_gyn)
+
+  gastroenterology:
+    label: "Gastroenterology"
+    codes:
+      - "207RG0100X"   # Gastroenterology
+      - "207RT0003X"   # Transplant Hepatology
+
+  urology:
+    label: "Urology"
+    codes:
+      - "208800000X"   # Urology
+      - "2088P0231X"   # Pediatric Urology
+
+  rheumatology:
+    label: "Rheumatology"
+    codes:
+      - "207RR0500X"   # Rheumatology
+
+  endocrinology:
+    label: "Endocrinology"
+    codes:
+      - "207RE0101X"   # Endocrinology, Diabetes and Metabolism
+
+  nephrology:
+    label: "Nephrology"
+    codes:
+      - "207RN0300X"   # Nephrology
+
+  dermatology:
+    label: "Dermatology"
+    codes:
+      - "207N00000X"   # Dermatology
+      - "207NI0002X"   # Clinical and Laboratory Dermatological Immunology
+      - "207NS0135X"   # Dermatopathology
+      - "207ND0900X"   # Dermatology, MOHS-Micrographic Surgery
+      - "207NP0225X"   # Pediatric Dermatology
+
+  emergency_medicine:
+    label: "Emergency Medicine"
+    codes:
+      - "207P00000X"   # Emergency Medicine
+      - "207PE0004X"   # Emergency Medical Services
+      - "207PT0002X"   # Pediatric Emergency Medicine
+
+# Notes:
+# - Some codes appear in multiple specialties (Surgical Oncology, Gynecologic Oncology).
+#   This is intentional. A surgical oncologist counts toward both general surgery and oncology.
+# - Periodic refresh required when NUCC publishes new codes (annual).
+# - Source: https://taxonomy.nucc.org/ (public, no login).

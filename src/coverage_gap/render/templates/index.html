@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Coverage Gap Index for Mississippi Critical Access Hospitals{% endblock %}
+{% block body_class %}page-map{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1>{{ headline.text }}.</h1>
+  <p class="subhead">Sixty million rural Americans face shortages like this. Tenens Health is building the data layer that closes them.</p>
+  <p class="cta-prompt"><span class="cta-arrow" aria-hidden="true">&rarr;</span> Click any county or hospital to explore the gaps.</p>
+</section>
+
+<div class="map-shell">
+  <div id="map" aria-label="Mississippi specialty coverage map"></div>
+  <div class="map-legend" aria-hidden="true">
+    <div class="legend-title">Worst hospital gap count in county</div>
+    {% for bucket in severity_buckets %}
+    <div class="legend-row"><span class="legend-swatch" style="background: {{ bucket.color }}"></span> {{ bucket.label }}</div>
+    {% endfor %}
+    <div class="legend-row"><span class="legend-swatch" style="background: #d0d0d0"></span> No CAH in county</div>
+    <div class="legend-divider"></div>
+    <div class="legend-row legend-cah"><span class="legend-dot"></span> Critical Access Hospital (click for detail)</div>
+  </div>
+  <aside id="side-panel" class="side-panel" aria-hidden="true">
+    <button id="side-close" aria-label="Close panel">&times;</button>
+    <div id="side-content"></div>
+  </aside>
+</div>
+
+<section class="below-map">
+  <div class="why-card">
+    <h2>Why this exists</h2>
+    <p>Sixty million Americans in rural areas face severe specialist shortages: 30 physicians per 100,000 people versus 263 in urban areas. The institutions making 5 to 30 year decisions about physician supply, medical schools setting residency counts, federal programs allocating workforce funding, hospital systems planning specialty departments, work from data that is years stale and aggregated to the state level. Tenens Health is building the granular real-time signal those institutions need. This index is the first artifact in that effort.</p>
+    <p>Mississippi today. All 50 states next.</p>
+  </div>
+  <div class="how-card">
+    <h2>How to read this map</h2>
+    <p>Each Mississippi county is shaded by the worst hospital gap count it contains: the highest number of HIGH or CRITICAL specialty gaps among the Critical Access Hospitals inside that county. {{ counties_with_data }} of {{ counties_count }} counties contain a federally designated CAH; the rest are shown in gray.</p>
+    <p>The dots on the map are the {{ cah_count }} CAHs themselves, colored by the same severity scale at the per-hospital level. Click any dot to see the full specialty breakdown for that hospital.</p>
+    <p><a href="methodology.html">Read the methodology</a> for data sources, the radius choice, and known limitations.</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block body_extra %}
+<script src="static/map.js"></script>
+{% endblock %}
