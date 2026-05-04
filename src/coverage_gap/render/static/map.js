@@ -57,6 +57,24 @@ const DEFAULT_CAH_ID = "251311"; // Patient's Choice of Humphreys
     if (!_knownLevels.has(s.level)) console.warn(`Unknown gap level "${s.level}" in data for CAH ${c.id}`);
   }));
 
+  // Register non-map listeners early so they survive a MapLibre init failure.
+  document.getElementById("side-close")?.addEventListener("click", closePanel);
+  window.addEventListener("hashchange", handleHash);
+  window.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+  const ctaBtn = document.getElementById("cta-open-humphreys");
+  if (ctaBtn) {
+    ctaBtn.addEventListener("click", () => { window.location.hash = "cah/" + DEFAULT_CAH_ID; });
+    ctaBtn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); window.location.hash = "cah/" + DEFAULT_CAH_ID; }
+    });
+  }
+
+  const specSelect = document.getElementById("specialty-select");
+  if (specSelect) {
+    specSelect.addEventListener("change", () => { updateHeadlineCount(specSelect.value); });
+  }
+
   // Stamp initial county colors onto each GeoJSON feature for MapLibre data-driven styling.
   for (const f of counties.features) {
     const fips = f.properties.fips;
@@ -82,13 +100,19 @@ const DEFAULT_CAH_ID = "251311"; // Patient's Choice of Humphreys
       },
     }));
 
-  const map = new maplibregl.Map({
-    container: "map",
-    style: "https://tiles.openfreemap.org/styles/positron",
-    bounds: MS_BBOX,
-    fitBoundsOptions: { padding: { top: 30, bottom: 30, left: 30, right: 240 } },
-    attributionControl: { compact: true },
-  });
+  let map;
+  try {
+    map = new maplibregl.Map({
+      container: "map",
+      style: "https://tiles.openfreemap.org/styles/positron",
+      bounds: MS_BBOX,
+      fitBoundsOptions: { padding: { top: 30, bottom: 30, left: 30, right: 240 } },
+      attributionControl: { compact: true },
+    });
+  } catch (e) {
+    console.warn("MapLibre failed to initialize (WebGL unavailable):", e.message);
+    return;
+  }
 
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
 
@@ -400,34 +424,5 @@ const DEFAULT_CAH_ID = "251311"; // Patient's Choice of Humphreys
   function escapeHtml(s) {
     if (s === null || s === undefined) return "";
     return String(s).replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
-  }
-
-  document.getElementById("side-close").addEventListener("click", closePanel);
-  window.addEventListener("hashchange", handleHash);
-
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closePanel();
-  });
-
-  // CTA prompt — open Patient's Choice of Humphreys (default showcase hospital)
-  const ctaBtn = document.getElementById("cta-open-humphreys");
-  if (ctaBtn) {
-    ctaBtn.addEventListener("click", () => {
-      window.location.hash = "cah/" + DEFAULT_CAH_ID;
-    });
-    ctaBtn.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        window.location.hash = "cah/" + DEFAULT_CAH_ID;
-      }
-    });
-  }
-
-  // Specialty dropdown — update headline count only, map and panel unchanged
-  const specSelect = document.getElementById("specialty-select");
-  if (specSelect) {
-    specSelect.addEventListener("change", () => {
-      updateHeadlineCount(specSelect.value);
-    });
   }
 })();
