@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Coverage Gap Index for Mississippi Critical Access Hospitals{% endblock %}
+{% block title %}Coverage Gap Index&#8482;: Mississippi Critical Access Hospitals{% endblock %}
 {% block body_class %}page-map{% endblock %}
 
 {% block head_extra %}
@@ -9,13 +9,16 @@
 
 {% block content %}
 <section class="hero">
-  <h1>{{ headline.text }}.</h1>
-  <p class="subhead">Sixty million rural Americans face shortages like this. Tenens Health is building the data layer that closes them.</p>
-  <p class="cta-prompt"><span class="cta-arrow" aria-hidden="true">&rarr;</span> Click any county or hospital to explore the gaps.</p>
+  <h1><span id="gap-count">{{ headline.n }}</span> of {{ headline.total }} Mississippi rural hospitals have no <span class="inline-select-wrap"><select id="specialty-select" aria-label="Change specialty"></select><span class="inline-select-caret" aria-hidden="true">&#8964;</span></span> within {{ radius_mi }} miles.</h1>
+  <p class="subhead">Sixty million rural Americans live too far from the specialists they need. This map shows where the gaps are.</p>
+  <div class="hero-actions">
+    <p class="cta-prompt" id="cta-open-humphreys" role="button" tabindex="0"><span class="cta-arrow" aria-hidden="true">&rarr;</span> Click any county or hospital to explore speciality gaps</p>
+    <a href="about.html" class="cta-prompt hero-about-link"><span class="cta-arrow" aria-hidden="true">&rarr;</span> Learn how Tenens Health is solving the coverage gap</a>
+  </div>
 </section>
 
 <div class="map-shell">
-  <div id="map" aria-label="Mississippi specialty coverage map"></div>
+  <div id="map" data-radius-mi="{{ radius_mi }}" aria-label="Mississippi specialty coverage map"></div>
   <div class="map-legend" aria-hidden="true">
     <div class="legend-title">Worst hospital gap count in county</div>
     {% for bucket in severity_buckets %}
@@ -34,14 +37,16 @@
 <section class="below-map">
   <div class="why-card">
     <h2>Why this exists</h2>
-    <p>Sixty million Americans in rural areas face severe specialist shortages: 30 physicians per 100,000 people versus 263 in urban areas. The institutions making 5 to 30 year decisions about physician supply, medical schools setting residency counts, federal programs allocating workforce funding, hospital systems planning specialty departments, work from data that is years stale and aggregated to the state level. Tenens Health is building the granular real-time signal those institutions need. This index is the first artifact in that effort.</p>
-    <p>Mississippi today. All 50 states next.</p>
+    <p>Rural America has 30 physicians per 100,000 people. Cities have 263. The shortage is not a secret, but it persists because the people with power to fix it make five-to-thirty-year commitments from data that is years stale and aggregated to the state level. County averages hide the hospital-by-hospital reality.</p>
+    <p>The Healthcare Speciality Coverage Gap Index&#8482; maps that reality: hospital by hospital, specialty by specialty, built from public CMS data and precise enough to inform a placement or funding decision. We started with Mississippi because it has 40 Critical Access Hospitals and some of the deepest gaps in the country. All 50 states are next.</p>
   </div>
   <div class="how-card">
     <h2>How to read this map</h2>
-    <p>Each Mississippi county is shaded by the worst hospital gap count it contains: the highest number of HIGH or CRITICAL specialty gaps among the Critical Access Hospitals inside that county. {{ counties_with_data }} of {{ counties_count }} counties contain a federally designated CAH; the rest are shown in gray.</p>
-    <p>The dots on the map are the {{ cah_count }} CAHs themselves, colored by the same severity scale at the per-hospital level. Click any dot to see the full specialty breakdown for that hospital.</p>
-    <p><a href="methodology.html">Read the methodology</a> for data sources, the radius choice, and known limitations.</p>
+    <p>Each county is shaded by the worst-case gap count among its Critical Access Hospitals (the highest number of HIGH or CRITICAL specialty gaps recorded across any CAH in that county). {{ counties_with_data }} of {{ counties_count }} Mississippi counties contain a federally designated CAH; the rest appear gray.</p>
+    <p>The dots represent the {{ cah_count }} CAHs, colored by gap severity. Click any dot to see the full specialty breakdown for that hospital. <a href="methodology.html">Read the methodology</a> for a full explanation of data sources, radius definitions, and known limitations.</p>
+  </div>
+  <div class="tenens-cta-card">
+    <a href="about.html" class="tenens-cta-inner">Learn how Tenens Health is solving the healthcare speciality coverage gap problem &rarr;</a>
   </div>
 </section>
 {% endblock %}

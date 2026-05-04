@@ -13,6 +13,7 @@
   --header-h: 60px;
   --font-display: "Newsreader", Georgia, "Times New Roman", serif;
   --font-body: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --yc: #ff6600;
 }
 
 * { box-sizing: border-box; }
@@ -42,7 +43,7 @@ a:visited { color: var(--link-visited); }
   background: white;
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 200;
 }
 .site-header .brand {
   display: flex;
@@ -113,7 +114,6 @@ main {
 }
 .hero .subhead {
   color: var(--muted);
-  max-width: 64ch;
   margin: 0 0 0.85rem;
   font-size: 1.02rem;
   line-height: 1.55;
@@ -134,6 +134,26 @@ main {
   border: 1px solid var(--border);
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  user-select: none;
+}
+.hero .cta-prompt:hover {
+  background: var(--bg);
+  border-color: #bbb;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.hero .cta-prompt:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+.hero-about-link,
+.hero-about-link:visited,
+.hero-about-link:hover {
+  color: var(--fg);
+  text-decoration: none;
 }
 .hero .cta-prompt .cta-arrow {
   font-size: 1.25rem;
@@ -142,6 +162,47 @@ main {
   font-weight: 600;
   font-family: var(--font-body);
   transform: translateY(-1px);
+}
+
+.inline-select-wrap {
+  display: inline;
+}
+#specialty-select {
+  field-sizing: content;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--fg);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: inherit;
+  line-height: inherit;
+  font-variation-settings: "opsz" 36;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  vertical-align: baseline;
+}
+#specialty-select:hover { opacity: 0.65; }
+#specialty-select:focus { outline: none; }
+#specialty-select:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+#specialty-select option {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--fg);
+  background: white;
+}
+.inline-select-caret {
+  display: inline;
+  pointer-events: none;
+  font-size: 0.5em;
+  color: var(--muted);
+  vertical-align: middle;
+  margin-left: 0.15em;
 }
 
 .map-shell {
@@ -414,13 +475,25 @@ details.spec-disclosure[open] summary::before { transform: rotate(90deg); }
 }
 .below-map .why-card,
 .below-map .how-card { padding-top: 0.5rem; }
-.below-map .why-card p:last-of-type {
-  font-family: var(--font-display);
+.below-map .tenens-cta-card {
+  grid-column: 1 / -1;
+  background: white;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--yc);
+  border-radius: 0 6px 6px 0;
+  padding: 0.6rem 1.1rem;
+  margin-top: 0.25rem;
+}
+.tenens-cta-inner {
+  display: block;
+  font-size: 0.88rem;
   font-weight: 500;
-  font-style: italic;
-  font-size: 1.05rem;
-  font-variation-settings: "opsz" 18;
   color: var(--fg);
+  text-decoration: none;
+}
+.tenens-cta-inner:hover { text-decoration: none; color: var(--fg); }
+.tenens-cta-inner:visited { color: var(--fg); }
+.below-map .why-card p:last-of-type {
   margin-top: 1rem;
 }
 .below-map h2 {
@@ -478,11 +551,10 @@ footer {
   .site-header { padding: 0 1rem; }
   .site-header nav a { margin-left: 1rem; font-size: 0.85rem; }
   .site-header .brand-name { font-size: 1.05rem; }
-  .site-header .brand-by { display: none; }
 
   .page-map .hero { padding: 1rem 1rem 0.6rem; }
   .hero h1 { font-size: 1.55rem; max-width: none; }
-  .hero .subhead { font-size: 0.92rem; }
+  .hero .subhead { font-size: 0.92rem; white-space: normal; }
 
   .map-shell { height: calc(100vh - var(--header-h) - 200px); min-height: 420px; }
   .map-legend { font-size: 0.72rem; padding: 0.5rem 0.65rem; max-width: 180px; }

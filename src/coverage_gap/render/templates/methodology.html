@@ -1,39 +1,39 @@
 {% extends "base.html" %}
-{% block title %}Methodology | Coverage Gap Index{% endblock %}
+{% block title %}Methodology | Healthcare Speciality Coverage Gap Index&#8482; (HSCGI&#8482;){% endblock %}
 {% block content %}
 <section class="prose">
 <h1>Methodology</h1>
 
 <h2>Data sources</h2>
 <ul>
-  <li><strong>NPPES</strong>: National Plan and Provider Enumeration System. Every licensed physician in the US, with NUCC taxonomy code, practice address, and license states. Source: download.cms.gov/nppes/. Refreshed monthly. We pull the full file (around 8GB uncompressed, 11GB raw), filter to Mississippi plus adjacent states (Louisiana, Alabama, Arkansas, Tennessee), and keep active providers only.</li>
-  <li><strong>CAH Provider of Services file</strong>: federal registry of every Medicare-certified facility, with CAH designation. Source: data.cms.gov. We resolve the current quarterly CSV via the data.json catalog and filter to Mississippi CAHs (PRVDR_CTGRY_CD = 01, PRVDR_CTGRY_SBTYP_CD = 11).</li>
-  <li><strong>HRSA HPSA</strong>: Health Professional Shortage Area designations. Used to escalate gap severity when a CAH's county is HRSA-designated.</li>
-  <li><strong>Census 2020 ZCTA gazetteer</strong>: ZIP code centroid coordinates, used for physician practice address geocoding.</li>
-  <li><strong>Census 2020 county boundaries</strong>: cb_2020_us_county_500k cartographic file, filtered to Mississippi (STATEFP 28). Used for the choropleth and for assigning each CAH to a county via point-in-polygon.</li>
+  <li><strong>NPPES</strong>: The National Plan and Provider Enumeration System is CMS's authoritative registry of every licensed physician in the United States, carrying NUCC taxonomy codes, practice addresses, and license states. Source: download.cms.gov/nppes/. The file is refreshed monthly; the full release runs approximately 8 GB uncompressed (11 GB raw). The pipeline filters to Mississippi and the four adjacent states (Louisiana, Alabama, Arkansas, Tennessee) and retains active providers only.</li>
+  <li><strong>CAH Provider of Services file</strong>: The federal registry of every Medicare-certified facility, including Critical Access Hospital designation. Source: data.cms.gov. The current quarterly CSV is resolved programmatically via the data.json catalog and filtered to Mississippi CAHs using CMS category codes (PRVDR_CTGRY_CD = 01, PRVDR_CTGRY_SBTYP_CD = 11).</li>
+  <li><strong>HRSA HPSA designations</strong>: Health Professional Shortage Area designations from the Health Resources and Services Administration, used to escalate gap severity for CAHs located in HRSA-designated counties.</li>
+  <li><strong>Census 2020 ZCTA gazetteer</strong>: ZIP Code Tabulation Area centroid coordinates, used for geocoding physician practice addresses.</li>
+  <li><strong>Census 2020 county boundaries</strong>: The cb_2020_us_county_500k cartographic file, filtered to Mississippi (STATEFP 28). Used to render the choropleth layer and to assign each CAH to its county via point-in-polygon intersection.</li>
 </ul>
 
 <h2>Specialty taxonomy mapping</h2>
-<p>NPPES codes provider specialty using NUCC taxonomy. We track {{ specialty_count }} core specialties matching the HRSA HPSA shortage categories. Each specialty is a set of NUCC codes including subspecialties, listed in the public taxonomy.yaml file in our repository. Erring on the side of inclusive (more codes per specialty) means we over-count physicians slightly, which keeps gap claims conservative.</p>
+<p>NPPES encodes provider specialty using NUCC (National Uniform Claim Committee) taxonomy codes. The index tracks {{ specialty_count }} core specialties selected to align with the HRSA HPSA shortage categories. Each specialty is defined as a set of NUCC codes that includes relevant subspecialties; the complete mapping is published in the taxonomy.yaml file in the public repository. The taxonomy is intentionally inclusive, meaning more codes are mapped per specialty than a strict definition would require. This approach produces a slight overcount of available physicians, which keeps gap claims conservative rather than inflated.</p>
 
 <h2>Why {{ radius_mi }} miles</h2>
-<p>This index reports specialty coverage within a {{ radius_mi }}-mile radius. That number is not arbitrary. HRSA uses {{ radius_mi }} miles as the standard threshold for "reasonable access" in non-metro areas when designating Health Professional Shortage Areas, the federal mechanism that drives loan forgiveness placements, J-1 waivers, and other workforce interventions.</p>
-<p>The original design assumed 60 miles. When we hit the data we found that 60 miles pulls in Jackson, Memphis, Mobile, and New Orleans metros, masking the gaps that rural patients actually face. At {{ radius_mi }} miles the picture matches what we hear from rural CMOs.</p>
+<p>Specialty coverage is measured within a {{ radius_mi }}-mile radius of each hospital. That threshold is not arbitrary: HRSA applies {{ radius_mi }} miles as its standard definition of "reasonable access" in non-metropolitan areas when designating Health Professional Shortage Areas, the federal mechanism that governs loan forgiveness placements, J-1 visa waivers, and related workforce interventions.</p>
+<p>An earlier design used 60 miles. At that radius, the catchment areas of Jackson, Memphis, Mobile, and New Orleans begin to overlap with rural Mississippi CAHs, masking the access gaps that rural patients actually face. At {{ radius_mi }} miles, the index produces a picture that is consistent with what rural CMOs report from operational experience.</p>
 
 <h2>Geographic distance</h2>
-<p>Hospitals are geocoded to precise lat/lon via Nominatim (OpenStreetMap). About half of Mississippi CAHs have rural highway-style addresses (for example "25117 HIGHWAY 51") that Nominatim cannot resolve; those fall back to the hospital's ZIP centroid, which inside a {{ radius_mi }}-mile radius introduces less than a mile of error. CAHs that fall back to ZIP centroid are flagged with an outlined marker on the map so you can see which positions are approximate. Physicians use ZIP centroid lookup against the Census 2020 ZCTA gazetteer. Distances use the haversine great-circle formula.</p>
+<p>Hospital coordinates are resolved to precise latitude and longitude via Nominatim (OpenStreetMap). Approximately half of Mississippi CAHs carry rural highway-style addresses (for example, "25117 HIGHWAY 51") that Nominatim cannot geocode; those hospitals fall back to their ZIP code centroid. Within a {{ radius_mi }}-mile radius, this fallback introduces less than one mile of positional error. CAHs using the centroid fallback are marked with an outlined map symbol so users can identify which positions are approximate. Physician locations are geocoded using the Census 2020 ZCTA gazetteer. All distances are computed using the haversine great-circle formula.</p>
 
 <h2>Gap scoring</h2>
-<p>Per (CAH, specialty) pair:</p>
+<p>Each (CAH, specialty) pair receives one of four severity classifications based on the count of active physicians of that specialty within {{ radius_mi }} miles of the hospital:</p>
 <ul>
-  <li><strong>CRITICAL</strong>: zero active physicians of this specialty within {{ radius_mi }} miles AND the CAH's county is HRSA HPSA-designated.</li>
+  <li><strong>CRITICAL</strong>: zero active physicians of this specialty within {{ radius_mi }} miles, and the CAH's county carries an HRSA HPSA designation.</li>
   <li><strong>HIGH</strong>: zero active physicians within {{ radius_mi }} miles.</li>
-  <li><strong>MODERATE</strong>: 1 or 2 active physicians within {{ radius_mi }} miles.</li>
-  <li><strong>COVERED</strong>: 3 or more active physicians within {{ radius_mi }} miles.</li>
+  <li><strong>MODERATE</strong>: one or two active physicians within {{ radius_mi }} miles.</li>
+  <li><strong>COVERED</strong>: three or more active physicians within {{ radius_mi }} miles.</li>
 </ul>
 
 <h2>Map severity buckets</h2>
-<p>Each CAH gets a "gap count" equal to the number of its {{ specialty_count }} specialties classified HIGH or CRITICAL. Each county on the map is shaded by the worst gap count among the CAHs inside it (max, not average) so a county with one severely-gapped hospital shows red even if the county also has a better-resourced one:</p>
+<p>Each CAH is assigned a gap count equal to the number of its {{ specialty_count }} tracked specialties classified HIGH or CRITICAL. County shading on the map reflects the highest gap count among all CAHs within that county, using the maximum rather than the mean, so that a county containing one severely gapped hospital is represented accurately even if other facilities in the county are better resourced:</p>
 <ul>
   {% for b in severity_buckets %}
   <li><strong style="color: {{ b.color }}">{{ b.label }}</strong></li>
@@ -42,15 +42,15 @@
 </ul>
 
 <h2>Verification</h2>
-<p>Before any new build of this dashboard publishes, the engineering team Googles 5 randomly sampled hospital-specialty pairs to confirm or refute the underlying claim. Confirmations are logged in our internal verification log against a build_id derived from the gap matrix's claim columns; signoffs from a different build are rejected by the render gate.</p>
+<p>Prior to publication of each dashboard build, five hospital-specialty pairs are selected at random and manually reviewed against external sources to confirm or refute the underlying gap claim. Confirmations are logged in an internal verification record keyed to a build identifier derived from the gap matrix's claim columns. Signoffs issued against a prior build are rejected by the render gate, ensuring that verification is specific to the data version being published.</p>
 
 <h2>Known limitations</h2>
 <ul>
-  <li>NPPES updates monthly. A cardiologist who recently relocated to Mississippi may not appear until the next refresh.</li>
-  <li>NPPES records practice addresses, not specialty privileges at any specific hospital. A physician within {{ radius_mi }} miles is not guaranteed to be on staff at any particular CAH or to take rural call. The operational data we collect through placements is what closes that gap. This dashboard is the public-data starting point.</li>
-  <li>We do not yet incorporate Medicare Part B aggregate utilization for demand weighting. That refinement is planned for V2.5.</li>
-  <li>Distances based on ZIP centroids are slightly conservative for physicians near a ZIP boundary. Inside a {{ radius_mi }}-mile radius the impact is under 1%.</li>
-  <li>One Mississippi CAH (Hancock Medical Center, Bay Saint Louis) has a PO Box ZIP that doesn't appear in the Census ZCTA gazetteer, and Nominatim couldn't resolve its street address either; it is excluded from the current build.</li>
+  <li>NPPES is refreshed monthly. A physician who recently relocated to Mississippi may not appear in the index until the following release cycle.</li>
+  <li>NPPES records practice addresses, not hospital staff privileges or rural call coverage. A physician whose address falls within {{ radius_mi }} miles of a CAH is not guaranteed to hold privileges at that hospital or to serve its patients. Operationally verified placement data is what closes that gap; this dashboard represents the public-data baseline.</li>
+  <li>Medicare Part B aggregate utilization has not yet been incorporated for demand weighting. That refinement is planned for V2.5.</li>
+  <li>ZIP centroid geocoding is slightly conservative for physicians located near a ZIP boundary. Within a {{ radius_mi }}-mile radius, the resulting measurement error is less than 1%.</li>
+  <li>One Mississippi CAH (Hancock Medical Center, Bay Saint Louis) carries a PO Box ZIP code that does not appear in the Census ZCTA gazetteer, and its street address could not be resolved by Nominatim; it is excluded from the current build.</li>
 </ul>
 </section>
 {% endblock %}
