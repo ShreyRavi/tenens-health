@@ -2,7 +2,7 @@
 
 ## Live demo
 
-- Production: [https://tenenshealth.com](https://tenenshealth.com) 
+- Production: [https://tenenshealth.com](https://tenenshealth.com)
 
 The live site is the Coverage Gap Index for Mississippi: hospital-level, specialty-level shortage data for all 40 Critical Access Hospitals in the state, built from public CMS sources.
 

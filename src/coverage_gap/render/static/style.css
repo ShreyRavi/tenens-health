@@ -81,6 +81,19 @@ a:visited { color: var(--link-visited); }
 }
 .site-header nav a:visited { color: var(--muted); }
 .site-header nav a:hover { color: var(--fg); }
+.site-header nav a.nav-github {
+  padding: 0.45rem;
+  margin-left: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  line-height: 0;
+  min-height: 36px;
+}
+.site-header nav a.nav-github:hover {
+  border-color: var(--fg);
+  background: var(--accent-soft, #f4f1ec);
+}
+.site-header nav a.nav-github svg { display: block; }
 
 main {
   max-width: var(--max-width);

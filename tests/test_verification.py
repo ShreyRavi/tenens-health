@@ -156,3 +156,82 @@ def test_compute_build_id_changes_with_claims():
         {"cah_id": "MS001", "specialty": "cardiology", "physician_count": 4, "level": "COVERED"},
     ])
     assert compute_build_id(a) != compute_build_id(b)
+
+
+def test_compute_build_id_missing_claim_columns_raises():
+    """Matrix without the 4 claim-bearing columns must raise ValueError."""
+    from coverage_gap.verification import compute_build_id
+    bad = pd.DataFrame([{"cah_id": "MS001", "specialty": "cardiology"}])
+    with pytest.raises(ValueError, match="missing claim columns"):
+        compute_build_id(bad)
+
+
+def test_write_and_read_build_id_roundtrip(tmp_path):
+    from coverage_gap.verification import read_build_id, write_build_id
+    out = write_build_id("abc123def456", output_dir=tmp_path)
+    assert out.exists()
+    assert out.read_text() == "abc123def456"
+    assert read_build_id(output_dir=tmp_path) == "abc123def456"
+
+
+def test_read_build_id_returns_none_when_missing(tmp_path):
+    from coverage_gap.verification import read_build_id
+    assert read_build_id(output_dir=tmp_path) is None
+
+
+def test_read_build_id_returns_none_when_blank(tmp_path):
+    """Empty .build_id file should be treated as no build id."""
+    from coverage_gap.verification import read_build_id
+    (tmp_path / ".build_id").write_text("   \n")
+    assert read_build_id(output_dir=tmp_path) is None
+
+
+def test_pick_random_sample_empty_matrix_raises():
+    from coverage_gap.verification import pick_random_sample
+    empty = pd.DataFrame(columns=["cah_id", "specialty", "level"])
+    with pytest.raises(ValueError, match="Empty gap matrix"):
+        pick_random_sample(empty)
+
+
+def test_format_for_review_uses_explicit_build_id(sample_matrix):
+    """Explicit build_id should appear in the rendered review text."""
+    sample = pick_random_sample(sample_matrix, n=2, seed=1)
+    text = format_for_review(sample, radius_mi=30, build_id="explicit_bid")
+    assert "explicit_bid" in text
+    assert "30 miles" in text
+
+
+def test_format_for_review_falls_back_to_cah_id_when_no_name():
+    """When cah_name is missing/null, the cah_id must be shown instead."""
+    df = pd.DataFrame([
+        {"cah_id": "MS999", "cah_name": None, "specialty": "cardiology",
+         "physician_count": 0, "level": "HIGH", "nearest_distance_mi": 50.0, "is_hpsa": False},
+    ])
+    text = format_for_review(df, radius_mi=30, build_id="bid")
+    assert "MS999" in text
+
+
+def test_gate_render_missing_build_id_raises(tmp_path, monkeypatch):
+    """When no build_id is supplied and no .build_id file exists, gate raises."""
+    from coverage_gap import verification
+    # Point read_build_id at a temp dir that has no .build_id file.
+    monkeypatch.setattr(verification, "PROCESSED_DIR", tmp_path)
+    log = tmp_path / "verification-log.md"
+    log.write_text("# empty\n")
+    with pytest.raises(VerificationGateError, match="No build_id available"):
+        gate_render(min_signoffs=5, build_id=None, log_path=log)
+
+
+def test_gate_render_falls_back_to_persisted_build_id(tmp_path, monkeypatch):
+    """When build_id is None, gate_render reads the persisted .build_id."""
+    from coverage_gap import verification
+    monkeypatch.setattr(verification, "PROCESSED_DIR", tmp_path)
+    (tmp_path / ".build_id").write_text("persistedbid")
+    log = tmp_path / "verification-log.md"
+    entries = "\n\n".join(
+        f"## 2026-05-04 14:0{i} signed off\n\nBuild: persistedbid\nResult: CONFIRMED\n"
+        for i in range(5)
+    )
+    log.write_text("# Verification Log\n\n" + entries)
+    # Should not raise — we read 'persistedbid' from disk and find 5 matching signoffs.
+    gate_render(min_signoffs=5, build_id=None, log_path=log)

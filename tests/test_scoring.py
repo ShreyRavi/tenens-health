@@ -72,3 +72,26 @@ def test_gap_score_three_within_radius_is_covered():
     result = gap_score(cah, "cardiology", df, is_hpsa=True)
     assert result.physician_count == 3
     assert result.level == GapLevel.COVERED
+
+
+def test_count_physicians_specialty_absent_returns_none():
+    """Subset is empty when no rows match the specialty: nearest must be None."""
+    df = pd.DataFrame([
+        {"lat": 32.4, "lon": -90.18, "specialty": "neurology"},
+    ])
+    count, nearest = count_physicians_within_radius(32.30, -90.18, df, "cardiology")
+    assert count == 0
+    assert nearest is None
+
+
+def test_count_physicians_all_outside_radius_returns_min_distance():
+    """When the specialty exists but all are outside radius, count is 0 but nearest is reported."""
+    df = pd.DataFrame([
+        {"lat": 35.00, "lon": -90.18, "specialty": "cardiology"},  # ~187mi north
+        {"lat": 36.00, "lon": -90.18, "specialty": "cardiology"},  # farther
+    ])
+    count, nearest = count_physicians_within_radius(32.30, -90.18, df, "cardiology", radius_mi=30)
+    assert count == 0
+    assert nearest is not None
+    # Closest of the two outside-radius matches is the 35.00 row, ~186mi.
+    assert 180 < nearest < 200

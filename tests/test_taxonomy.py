@@ -11,6 +11,15 @@ from coverage_gap.taxonomy import (
 )
 
 
+@pytest.fixture(autouse=True)
+def _clear_load_taxonomy_cache():
+    """load_taxonomy is decorated with @lru_cache. Clear before AND after each
+    test so per-path tests do not leak entries into the cache."""
+    load_taxonomy.cache_clear()
+    yield
+    load_taxonomy.cache_clear()
+
+
 def test_taxonomy_loads():
     t = load_taxonomy()
     assert "cardiology" in t
@@ -66,3 +75,18 @@ def test_all_codes_returns_set():
     # 15 specialties times at least 1-2 codes minimum yields well over 30.
     assert len(codes) > 30
     assert all(c.endswith("X") for c in codes)
+
+
+def test_load_taxonomy_missing_file_raises(tmp_path):
+    """Pointing load_taxonomy at a nonexistent path must raise TaxonomyError."""
+    missing = tmp_path / "no-such-taxonomy.yaml"
+    with pytest.raises(TaxonomyError, match="not found"):
+        load_taxonomy(path=missing)
+
+
+def test_load_taxonomy_malformed_raises(tmp_path):
+    """A YAML file without a top-level 'specialties' key must raise TaxonomyError."""
+    bad = tmp_path / "bad.yaml"
+    bad.write_text("other_key: 1\n")
+    with pytest.raises(TaxonomyError, match="missing 'specialties' key"):
+        load_taxonomy(path=bad)
