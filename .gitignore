@@ -34,7 +34,3 @@ site/
 
 # YC demo zip artifact
 *.zip
-
-# Generated artifacts (not committed; rebuilt for YC demo zip)
-README.html
-*.zip

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tenens Health Coverage Gap Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;500;600;700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --fg: #1a1a1a; --muted: #555; --border: #d4cdbf; --link: #1a4fa3; --bg: #fdfcf9; --code-bg: #f4f1ec; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--fg); font-family: 'Inter Tight', system-ui, -apple-system, sans-serif; line-height: 1.6; font-size: 16px; }
+main { max-width: 70ch; margin: 0 auto; padding: 2.5rem 1.75rem 4rem; }
+h1, h2, h3 { font-family: 'Newsreader', Georgia, serif; letter-spacing: -0.015em; }
+h1 { font-size: 2.25rem; font-weight: 600; font-variation-settings: 'opsz' 36; margin: 0 0 1.5rem; }
+h2 { font-size: 1.45rem; font-weight: 500; font-variation-settings: 'opsz' 24; margin: 2.4rem 0 0.6rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+h3 { font-size: 1.08rem; font-weight: 500; font-variation-settings: 'opsz' 18; margin: 1.6rem 0 0.4rem; }
+p, ul, ol { margin: 0.6rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li { margin-bottom: 0.35rem; }
+strong { font-weight: 600; }
+a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.88em; background: var(--code-bg); padding: 0.05em 0.35em; border-radius: 3px; border: 1px solid var(--border); }
+pre { background: var(--code-bg); padding: 0.85rem 1rem; border-radius: 4px; border: 1px solid var(--border); overflow-x: auto; line-height: 1.55; margin: 0.9rem 0; }
+pre code { background: transparent; padding: 0; border: 0; font-size: 0.85rem; }
+table { border-collapse: collapse; width: 100%; margin: 0.9rem 0; }
+th, td { padding: 0.5rem 0.75rem; border: 1px solid var(--border); text-align: left; }
+th { background: var(--code-bg); font-weight: 600; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+header.banner { background: #1a1a1a; color: #fdfcf9; padding: 0.75rem 1.75rem; font-size: 0.85rem; }
+header.banner a { color: #fdfcf9; }
+</style>
+</head>
+<body>
+<header class="banner">Tenens Health YC submission &middot; Live dashboard at <a href="https://tenenshealth.com">tenenshealth.com</a> &middot; Source on <a href="https://github.com/ShreyRavi/tenens-health">GitHub</a></header>
+<main>
+<h1>Tenens Health: Coverage Gap Index</h1>
+<h2>Live demo</h2>
+<ul>
+<li>Production: <a href="https://tenenshealth.com">https://tenenshealth.com</a></li>
+</ul>
+<p>The live site is the Coverage Gap Index for Mississippi: hospital-level, specialty-level shortage data for all 40 Critical Access Hospitals in the state, built from public CMS sources.</p>
+<h2>What this repository is</h2>
+<p>This repository is a demonstrative artifact, not the company. It is one slide of an eventual pitch deck made interactive: hospital-by-hospital, specialty-by-specialty shortage data for one state, derived from public CMS sources. The Mississippi map serves as the public-data baseline. It is the part of the Tenens Health value proposition that can be shown without operating the agency yet.</p>
+<p>The full Tenens Health product is a service-first business with product augmentation, not an app in isolation. The service is an AI-Native locum tenens agency that places physicians where the data shows care is missing. The product is the intelligence layer that learns from those placements and gets sharper over time. Every customer interaction generates proprietary demand-signal data that public datasets cannot produce, and that data is the long-term moat. The pitch a chief medical officer eventually sees is personalized to their hospital and county, drawing on the public-data baseline shown here together with Tenens' own placement data once the agency is operating. This static demo is the public-data baseline only; the personalization layer comes from running the service. The philosophy is straightforward: solve a real access problem through service, augmented by product, rather than the other way around. Incumbents profit from the shortage. Tenens is structured as a Public Benefit Corporation to eliminate it.</p>
+<h2>About Tenens Health</h2>
+<p>Tenens Health is a physician shortage intelligence platform for rural America, paired with an AI-native locum tenens agency that makes the data operational. The company is service-first and product-augmented: the agency does the placement work, and the product layer learns from each placement.</p>
+<p>The thesis is straightforward. Rural America has roughly 30 physicians per 100,000 residents, against 263 in cities. The institutions with power to change that ratio (medical schools setting residency counts, HRSA allocating workforce funding, hospital systems planning specialty departments) make multi-year commitments from data that is state-level and years stale. Hospital-level reality hides inside those state and county averages, so the wrong placements get prioritized and the shortage regenerates itself.</p>
+<p>The agency is the wedge. Each placement runs the same loop: a chief medical officer describes the specific gap, AI agents surface matched physicians from a curated pool, credentialing is coordinated across state lines, and outcomes are tracked after the assignment closes. Each step generates ground-truth demand data (which specialty, which county, which hospital, which acuity profile, what was actually accepted, what was declined and why) that no public dataset can produce.</p>
+<p>The intelligence layer learns from those placements over time. Matching gets sharper as the placement history grows, and the system surfaces predictive shortage signals (which specialty in which geography in which quarter at which acuity) that no incumbent has, because incumbents hoard placement data as a competitive moat. Aggregate, anonymized demand data flows from the intelligence layer to the institutions whose decisions move physician supply on long horizons: HRSA, AAMC, medical school residency planners, and hospital capital planners. That sharing is the go-to-market for the intelligence platform, not a threat to it.</p>
+<p>Tenens is structured as a Public Benefit Corporation. Incumbents (CHG Healthcare, AMN Healthcare, Barton Associates) profit from the continuation of the shortage, so they cannot share placement data with HRSA or advocate for reforms (IMLC expansion, J-1 visa waiver optimization, GME funding reform) that would shrink their market. A fiduciary-bound PBC can. The PBC structure is part of the business model, not a values statement.</p>
+<h2>Methodology</h2>
+<p>The methodology below is the public-data baseline. It is what the dashboard at tenenshealth.com computes and renders, and it is the version of the gap picture that can be reproduced from sources anyone can download. A more detailed treatment of each step lives in <code>src/coverage_gap/render/templates/methodology.html</code> and on the live site.</p>
+<h3>Data sources</h3>
+<p>The pipeline assembles five public inputs.</p>
+<ul>
+<li><strong>NPPES</strong> (National Plan and Provider Enumeration System): CMS's authoritative registry of every licensed United States physician, with NUCC taxonomy codes, practice addresses, and license states. Sourced from <code>download.cms.gov/nppes/</code>. The full release is roughly 8 GB uncompressed, refreshed monthly. The pipeline filters to active providers in Mississippi and four adjacent states (Louisiana, Alabama, Arkansas, Tennessee) so that catchment-area neighbors are not silently dropped.</li>
+<li><strong>CAH Provider of Services file</strong>: the federal registry of every Medicare-certified facility, including Critical Access Hospital designation. Sourced from <code>data.cms.gov</code>. The current quarterly CSV is resolved programmatically from the data.json catalog and filtered to Mississippi CAHs by category code (<code>PRVDR_CTGRY_CD = 01</code>, <code>PRVDR_CTGRY_SBTYP_CD = 11</code>).</li>
+<li><strong>HRSA HPSA designations</strong>: Health Professional Shortage Area designations from the Health Resources and Services Administration. Used to escalate gap severity for CAHs whose county carries a relevant HPSA designation.</li>
+<li><strong>Census 2020 ZCTA gazetteer</strong>: ZIP Code Tabulation Area centroid coordinates, used to geocode physician practice addresses and as a fallback for hospital addresses Nominatim cannot resolve.</li>
+<li><strong>Census 2020 county boundaries</strong>: the <code>cb_2020_us_county_500k</code> cartographic file, filtered to Mississippi (<code>STATEFP 28</code>). Used to render the choropleth layer and to assign each CAH to its county via point-in-polygon intersection.</li>
+</ul>
+<h3>Specialty taxonomy mapping</h3>
+<p>NPPES encodes provider specialty using NUCC (National Uniform Claim Committee) taxonomy codes. The index tracks 15 core specialties chosen to align with HRSA HPSA shortage categories. Each specialty is defined as a set of NUCC codes that includes its relevant subspecialties; the complete mapping is published in <code>taxonomy.yaml</code>. The taxonomy is intentionally inclusive, meaning more codes are mapped per specialty than a strict definition would require. The result is a slight overcount of available physicians, which keeps gap claims defensible: any reported gap survives a charitable counting rule.</p>
+<h3>Geographic distance</h3>
+<p>Hospital coordinates are resolved to latitude and longitude via Nominatim (OpenStreetMap). Roughly half of Mississippi CAHs carry rural highway-style addresses (for example, "25117 HIGHWAY 51") that Nominatim cannot geocode; those hospitals fall back to their ZIP centroid. Inside a 30-mile radius, the centroid fallback introduces less than one mile of positional error. CAHs using the centroid fallback are marked with an outlined map symbol so that approximate positions are identifiable. Physician locations are geocoded using the Census 2020 ZCTA gazetteer. All distances are computed using the haversine great-circle formula.</p>
+<h3>Why 30 miles</h3>
+<p>Specialty coverage is measured within a 30-mile radius of each hospital. The threshold is not arbitrary. HRSA applies 30 miles as its standard definition of "reasonable access" in non-metropolitan areas when designating Health Professional Shortage Areas, the federal mechanism that governs loan forgiveness placements, J-1 visa waivers, and related workforce interventions. An earlier draft used 60 miles. At that radius, the catchment areas of Jackson, Memphis, Mobile, and New Orleans begin to overlap with rural Mississippi CAHs, and the gaps that rural patients actually face are masked by metropolitan supply they cannot reach. At 30 miles, the index produces a picture consistent with what rural CMOs report from operational experience.</p>
+<h3>Gap scoring</h3>
+<p>Each (CAH, specialty) pair receives one of four severity classifications, based on the count of active physicians of that specialty within 30 miles of the hospital.</p>
+<ul>
+<li><strong>CRITICAL</strong>: zero active physicians within 30 miles, and the CAH's county carries an HRSA HPSA designation.</li>
+<li><strong>HIGH</strong>: zero active physicians within 30 miles.</li>
+<li><strong>MODERATE</strong>: one or two active physicians within 30 miles.</li>
+<li><strong>COVERED</strong>: three or more active physicians within 30 miles.</li>
+</ul>
+<h3>Map severity buckets</h3>
+<p>Each CAH is assigned a gap count equal to the number of its 15 tracked specialties classified HIGH or CRITICAL. County shading on the map reflects the highest gap count among all CAHs in the county. The choice to use the maximum, not the mean, is deliberate: a county that contains one severely gapped CAH should not be averaged away by a healthier neighbor, because patients of the gapped facility do not benefit from the neighbor's coverage. Counties without a federally designated CAH are not scored and render gray.</p>
+<h3>Verification</h3>
+<p>Before each dashboard build is published, five hospital-specialty pairs are selected at random and reviewed manually against external sources to confirm or refute the underlying gap claim. Confirmations are logged in <code>audit/verification-log.md</code>, keyed to a build identifier derived from a hash of the gap matrix's claim columns. Signoffs issued against a prior build are rejected by the render gate, which means verification is always specific to the data version being published. A wrong "zero cardiologists within 30 miles" claim in a CMO outreach email is the kind of error that ends a hospital relationship before it starts; the gate exists to prevent that specific failure mode.</p>
+<h3>Known limitations</h3>
+<ul>
+<li>NPPES is refreshed monthly. A physician who relocated to Mississippi recently may not appear in the index until the following release cycle.</li>
+<li>NPPES records practice addresses, not hospital staff privileges or rural call coverage. A physician whose address falls within 30 miles of a CAH is not guaranteed to hold privileges at that hospital. Operationally verified placement data is what closes that gap; the dashboard represents the public-data baseline only.</li>
+<li>Medicare Part B aggregate utilization has not yet been incorporated for demand weighting. That refinement is planned for V2.5.</li>
+<li>ZIP centroid geocoding is slightly conservative for physicians located near a ZIP boundary. Inside a 30-mile radius the resulting measurement error is under one percent.</li>
+<li>Hancock Medical Center (Bay Saint Louis) carries a PO Box ZIP code that does not appear in the Census ZCTA gazetteer, and its street address could not be resolved by Nominatim. It is excluded from the current build.</li>
+</ul>
+<p>The baseline shown here represents the public-data picture of where care is and is not, computed conservatively. It does not represent operational reality at the hospital level (privileges, call coverage, real wait times), and it is not the fully personalized analysis a CMO will see once Tenens is operating.</p>
+<h2>Local setup</h2>
+<p>The dashboard can be reproduced end-to-end from a clean checkout in under ten minutes once dependencies are cached.</p>
+<h3>Quick path (recommended)</h3>
+<p>A one-shot setup script handles dependency install, data download, build, render, and local preview.</p>
+<pre><code>git clone https://github.com/ShreyRavi/tenens-health.git
+cd tenens-health
+</code></pre>
+<p><strong>macOS or Linux:</strong></p>
+<pre><code>./setup.sh
+</code></pre>
+<p><strong>Windows (PowerShell):</strong></p>
+<pre><code>.\setup.ps1
+</code></pre>
+<p>Both scripts accept <code>--no-serve</code> (<code>-NoServe</code> on Windows) to skip the local web server, and <code>--quick</code> (<code>-Quick</code>) to skip the data download and build steps if <code>data/processed/gap_matrix.parquet</code> already exists.</p>
+<p>The script ends by serving the rendered site at <code>http://localhost:8000</code>. Press Ctrl-C to stop.</p>
+<h3>Manual path</h3>
+<p>The sections below cover the same steps as the script, broken out for the developer who wants to run them individually.</p>
+<h3>Prerequisites</h3>
+<ul>
+<li>macOS, Linux, or Windows (PowerShell 5.1 or newer; WSL2 also works).</li>
+<li>Python 3.11 or newer.</li>
+<li><a href="https://docs.astral.sh/uv/getting-started/installation/"><code>uv</code></a>, the Python package manager. Install via Homebrew:
+  <code>brew install uv</code>
+  Or via curl (macOS/Linux):
+  <code>curl -LsSf https://astral.sh/uv/install.sh | sh</code>
+  Or via PowerShell (Windows):
+  <code>powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</code></li>
+<li>An internet connection for the CMS, HRSA, and Census downloads.</li>
+<li>About 12 GB of free disk space. The NPPES monthly release alone is roughly 8 GB uncompressed.</li>
+</ul>
+<h3>Clone and install</h3>
+<pre><code>git clone https://github.com/ShreyRavi/tenens-health.git
+cd tenens-health
+uv sync --all-extras
+</code></pre>
+<p><code>uv sync --all-extras</code> installs both runtime dependencies and the dev extras (pytest, pytest-cov, ruff).</p>
+<h3>Run the pipeline</h3>
+<p>The CLI is registered as <code>coverage-gap</code> and exposes five commands, intended to run in order on a fresh checkout.</p>
+<pre><code>uv run coverage-gap download    # pulls NPPES, CAH POS, ZIP centroids, county boundaries into data/raw/
+uv run coverage-gap build       # filters, geocodes, joins, scores into data/processed/
+uv run coverage-gap verify      # prints 5 random CAH x specialty pairs for human signoff
+uv run coverage-gap render      # writes the static site into site/
+uv run coverage-gap serve       # serves site/ at http://localhost:8000
+</code></pre>
+<p><code>download</code> is the long step. Expect several minutes on a typical home connection, dominated by the NPPES file. <code>build</code> takes one to two minutes for the geocode pass on the first run, then seconds on subsequent runs because coordinates are cached in the parquet outputs. <code>verify</code> is interactive: it prints five hospital-specialty pairs and expects a signoff in <code>audit/verification-log.md</code> against the current build identifier before <code>render</code> will produce output. <code>render</code> and <code>serve</code> are seconds each.</p>
+<p>Once <code>serve</code> is running, open <code>http://localhost:8000</code> in a browser. The map should match the production deployment.</p>
+<h3>Tests</h3>
+<pre><code>uv run pytest
+</code></pre>
+<p>Tests cover the scoring rubric, the verification gate, and the geocoding fallback. The render gate is exercised in tests as a regression guard.</p>
+<h3>Deploy</h3>
+<p>The site is pre-rendered, so deployment is a static upload. Production is on Vercel:</p>
+<pre><code>cd site
+vercel --prod
+</code></pre>
+<p>DNS for the apex domain is configured at Namecheap with an A record <code>@ -&gt; 76.76.21.21</code> and a CNAME <code>www -&gt; cname.vercel-dns.com</code>. While the apex propagates, the site is reachable at <code>https://tenens-health.vercel.app</code>.</p>
+<h2>How we guided AI</h2>
+<p>This codebase was scaffolded with Claude Code. The audit trail is deliberate, not decorative. Every Claude judgment that mattered (specialty taxonomy choices, distance threshold, severity thresholds, render gate semantics) is logged in <code>audit/decisions.md</code> along with the human input that shaped or corrected it. Every gap claim that goes on the dashboard passes through <code>audit/verification-log.md</code> before render, keyed to a build identifier so a signoff cannot silently follow the data forward.</p>
+<p>The reason the trail is built into the pipeline rather than kept in a notebook is operational. A wrong gap claim in a CMO email is not a recoverable mistake. The trail is what makes the dashboard claims defensible to the chief medical officer, the academic reader, and any future auditor.</p>
+<h2>Status</h2>
+<p>V1 shipped, Mississippi only. All 50 states next. Locum tenens placement and the broader intelligence platform follow.</p>
+</main>
+</body>
+</html>
