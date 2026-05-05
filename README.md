@@ -81,17 +81,48 @@ The baseline shown here represents the public-data picture of where care is and 
 
 The dashboard can be reproduced end-to-end from a clean checkout in under ten minutes once dependencies are cached.
 
+### Quick path (recommended)
+
+A one-shot setup script handles dependency install, data download, build, render, and local preview.
+
+```
+git clone https://github.com/ShreyRavi/tenens-health.git
+cd tenens-health
+```
+
+**macOS or Linux:**
+```
+./setup.sh
+```
+
+**Windows (PowerShell):**
+```
+.\setup.ps1
+```
+
+Both scripts accept `--no-serve` (`-NoServe` on Windows) to skip the local web server, and `--quick` (`-Quick`) to skip the data download and build steps if `data/processed/gap_matrix.parquet` already exists.
+
+The script ends by serving the rendered site at `http://localhost:8000`. Press Ctrl-C to stop.
+
+### Manual path
+
+The sections below cover the same steps as the script, broken out for the developer who wants to run them individually.
+
 ### Prerequisites
 
-- macOS or Linux. Windows is not tested; WSL2 should work.
+- macOS, Linux, or Windows (PowerShell 5.1 or newer; WSL2 also works).
 - Python 3.11 or newer.
 - [`uv`](https://docs.astral.sh/uv/getting-started/installation/), the Python package manager. Install via Homebrew:
   ```
   brew install uv
   ```
-  Or via curl:
+  Or via curl (macOS/Linux):
   ```
   curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+  Or via PowerShell (Windows):
+  ```
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
   ```
 - An internet connection for the CMS, HRSA, and Census downloads.
 - About 12 GB of free disk space. The NPPES monthly release alone is roughly 8 GB uncompressed.
