@@ -147,6 +147,7 @@ def render_site(
         ),
         "methodology.html": env.get_template("methodology.html").render(**common),
         "about.html": env.get_template("about.html").render(**common),
+        "how.html": env.get_template("how.html").render(**common),
     }
     for filename, html in rendered.items():
         (output_dir / filename).write_text(html)
