@@ -1,0 +1,14 @@
+data/raw
+data/interim
+data/processed
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.gstack
+audit
+src
+tests
+docs
+*.parquet
+.env*
