@@ -4,5 +4,10 @@
   "outputDirectory": "site",
   "framework": null,
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "git": {
+    "deploymentEnabled": {
+      "main": false
+    }
+  }
 }
